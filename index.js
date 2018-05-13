@@ -8,14 +8,47 @@ exports.handler = (event, context, callback) => {
 //    txt.append("、とはどのような意味ですか？");
     var data = JSON.stringify({
        replyToken: replyToken,
+       // ここがメッセージの内容
        messages: [
+           /* おうむ返し
            {
                type: "text", 
                text: txt
            }
+           */
+           {
+                "type": "template",
+                "altText": "テストメッセージ",
+                "template": {
+                    "type": "buttons",
+                    "text": "メッセージありがとうございます！どんなことに興味がありますか？",
+                    "defaultAction": {
+                        "type": "uri",
+                        "label": "Twitterをみる",
+                        "uri": "https://twitter.com/ky_yk_d"
+                    },
+                "actions": [
+                    {
+                        "type": "uri",
+                        "label": "ブログを読む",
+                        "uri": "https://ky-yk-d.hatenablog.com/"
+                    },
+                    {
+                        "type": "uri",
+                            "label": "GitHubをみる",
+                            "uri": "https://github.com/ky-yk-d"
+                       },
+                       {
+                            "type": "uri",
+                            "label": "Twitterをみる",
+                            "uri": "https://twitter.com/ky_yk_d"
+                       }
+                    ]
+                }
+           }
         ]
     });
-    opts = {
+    var opts = {
         hostname: 'api.line.me',
         path: '/v2/bot/message/reply',
         headers: {
