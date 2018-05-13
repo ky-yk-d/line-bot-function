@@ -5,17 +5,21 @@ exports.handler = (event, context, callback) => {
     var replyToken = data.replyToken;
     var message = data.message;
     var txt = message.text;
+    var jsonFile = require("./dialogue.json");
+//    console.log(jsonFile)
 //    txt.append("、とはどのような意味ですか？");
     var data = JSON.stringify({
        replyToken: replyToken,
        // ここがメッセージの内容
        messages: [
+           jsonFile.dialogue
            /* おうむ返し
            {
                type: "text", 
                text: txt
            }
            */
+           /* JSONを外部ファイル化
            {
                 "type": "template",
                 "altText": "テストメッセージ",
@@ -45,8 +49,9 @@ exports.handler = (event, context, callback) => {
                        }
                     ]
                 }
-           }
-        ]
+           } */
+           
+        ] 
     });
     var opts = {
         hostname: 'api.line.me',

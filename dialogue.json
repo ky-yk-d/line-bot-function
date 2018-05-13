@@ -1,0 +1,32 @@
+{
+    "dialogue": {
+        "type": "template",
+        "altText": "テストメッセージ",
+        "template": {
+            "type": "buttons",
+            "text": "メッセージありがとうございます！どんなことに興味がありますか？",
+            "defaultAction": {
+                "type": "uri",
+                "label": "Twitterをみる",
+                "uri": "https://twitter.com/ky_yk_d"
+            },
+            "actions": [
+                {
+                    "type": "uri",
+                    "label": "ブログを読む",
+                    "uri": "https://ky-yk-d.hatenablog.com/"
+                },
+                {
+                    "type": "uri",
+                    "label": "GitHubをみる",
+                    "uri": "https://github.com/ky-yk-d"
+                },
+                {
+                    "type": "uri",
+                    "label": "Twitterをみる",
+                    "uri": "https://twitter.com/ky_yk_d"
+                }
+            ]
+        }
+   } 
+}
