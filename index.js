@@ -1,56 +1,28 @@
+// ベースはQiita等で様々な人が公開しているソースコード
+// （例） https://qiita.com/tenn25/items/5456f9eb6ac92ff09dd9
 var https = require('https');
 
 exports.handler = (event, context, callback) => {
     data = event.events[0];
     var replyToken = data.replyToken;
     var message = data.message;
+// LINEでユーザから送られたテキストを取得
     var txt = message.text;
+// メッセージオブジェクトを記述したJSONファイルを読み込む
+// https://developers.line.me/ja/docs/messaging-api/reference/#anchor-e65d8a1fb213489f6475b06ad10f66b7b30b0072
     var jsonFile = require("./dialogue.json");
-//    console.log(jsonFile)
-//    txt.append("、とはどのような意味ですか？");
+// 入力に応じたメッサージの選択（関数でくくり出すべき）
+    var messageObj;
+    if (txt == '住所') {
+        messageObj = jsonFile.dialogue2;
+    } else {
+        messageObj = jsonFile.dialogue;
+    }
+// 返すデータを作成する
     var data = JSON.stringify({
        replyToken: replyToken,
-       // ここがメッセージの内容
        messages: [
-           jsonFile.dialogue
-           /* おうむ返し
-           {
-               type: "text", 
-               text: txt
-           }
-           */
-           /* JSONを外部ファイル化
-           {
-                "type": "template",
-                "altText": "テストメッセージ",
-                "template": {
-                    "type": "buttons",
-                    "text": "メッセージありがとうございます！どんなことに興味がありますか？",
-                    "defaultAction": {
-                        "type": "uri",
-                        "label": "Twitterをみる",
-                        "uri": "https://twitter.com/ky_yk_d"
-                    },
-                "actions": [
-                    {
-                        "type": "uri",
-                        "label": "ブログを読む",
-                        "uri": "https://ky-yk-d.hatenablog.com/"
-                    },
-                    {
-                        "type": "uri",
-                            "label": "GitHubをみる",
-                            "uri": "https://github.com/ky-yk-d"
-                       },
-                       {
-                            "type": "uri",
-                            "label": "Twitterをみる",
-                            "uri": "https://twitter.com/ky_yk_d"
-                       }
-                    ]
-                }
-           } */
-           
+           messageObj
         ] 
     });
     var opts = {
@@ -74,5 +46,4 @@ exports.handler = (event, context, callback) => {
     callback(null, data);
     req.write(data);
     req.end();
-
 };

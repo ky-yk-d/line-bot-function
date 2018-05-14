@@ -28,5 +28,12 @@
                 }
             ]
         }
-   } 
+   },
+   "dialogue2": {
+        "type": "location",
+        "title": "東京スカイツリー",
+        "address": "〒131-0045 東京都墨田区押上１丁目１−２",
+        "latitude": 35.710139,
+        "longitude": 139.810833
+   }
 }
