@@ -5,26 +5,39 @@ var https = require('https');
 exports.handler = (event, context, callback) => {
     data = event.events[0];
     var replyToken = data.replyToken;
-    var message = data.message;
 // LINEでユーザから送られたテキストを取得
-    var txt = message.text;
 // メッセージオブジェクトを記述したJSONファイルを読み込む
 // https://developers.line.me/ja/docs/messaging-api/reference/#anchor-e65d8a1fb213489f6475b06ad10f66b7b30b0072
     var jsonFile = require("./dialogue.json");
 // 入力に応じたメッサージの選択（関数でくくり出すべき）
     var messageObj;
-    if (txt == '住所') {
-        messageObj = jsonFile.dialogue2;
+    console.log(data);
+    if (data.type == 'message') {
+        console.log('メッセージの場合');
+        var message = data.message;
+        var txt = message.text;
+        if (txt == '住所') {
+            messageObj = jsonFile.dialogue2;
+        } else {
+            messageObj = jsonFile.dialogue;
+        }
+    } else if (data.type == 'postback') {
+        console.log('postbackの場合');
+        messageObj = jsonFile.dialogue3;
     } else {
+        console.log('それ以外の場合');
         messageObj = jsonFile.dialogue;
     }
 // 返すデータを作成する
+    console.log('データ作成');
+    console.log(messageObj);
     var data = JSON.stringify({
        replyToken: replyToken,
        messages: [
            messageObj
         ] 
     });
+    console.log(data);
     var opts = {
         hostname: 'api.line.me',
         path: '/v2/bot/message/reply',

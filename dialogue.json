@@ -22,9 +22,10 @@
                     "uri": "https://github.com/ky-yk-d"
                 },
                 {
-                    "type": "uri",
-                    "label": "Twitterをみる",
-                    "uri": "https://twitter.com/ky_yk_d"
+                    "type": "postback",
+                    "label": "次の質問に行く",
+                    "data": "dialogue3",
+                    "displayText": "別の質問がいい！"
                 }
             ]
         }
@@ -35,5 +36,30 @@
         "address": "〒131-0045 東京都墨田区押上１丁目１−２",
         "latitude": 35.710139,
         "longitude": 139.810833
+   },
+   "dialogue3": {
+        "type": "template",
+        "altText": "メッセージ",
+        "template": {
+            "type": "buttons",
+            "thumbnailImageUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/k/ky_yk_d/20180513/20180513094057.png",
+            "imageAspectRatio": "rectangle",
+            "imageSize": "cover",
+            "imageBackgroundColor": "#000000",
+            "text": "別の質問へを押しましたね？",
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "おわり",
+                    "data": "end",
+                    "displayText": "おわりにする"
+                },
+                {
+                    "type": "uri",
+                    "label": "やっぱりTwitter",
+                    "uri": "https://twitter.com/ky_yk_d"
+                }
+            ]
+        }
    }
 }
