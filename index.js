@@ -1,7 +1,13 @@
 // ベースはQiita等で様々な人が公開しているソースコード
 // （例） https://qiita.com/tenn25/items/5456f9eb6ac92ff09dd9
-var https = require('https');
+let https = require('https');
 
+/**
+ * Lambda実行時に呼び出されるハンドラ
+ * @param {} event イベント
+ * @param {} context コンテキスト
+ * @param {} callback コールバック関数（正体は未確認）
+ */
 exports.handler = (event, context, callback) => {
     let messageObj;
     let replyToken;
@@ -58,7 +64,8 @@ exports.handler = (event, context, callback) => {
  * 入力されたデータに応じて、返すメッセージを生成する関数
  * @param {} data 入力されたデータ
  * @param {} jsonFile 外部ファイルから読み込んだJSON形式のデータ
- * @return メッセージオブジェクト
+ * @return {} メッセージオブジェクト
+ * @author こまど（ky_yk_d）
  */
 let getMessageObj = (data, jsonFile)=> {
     switch (data.type){
