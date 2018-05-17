@@ -85,11 +85,7 @@ let getMessageObj = (data, jsonFile)=> {
             }
         case 'postback':
             console.log('postbackの場合');
-            if (data.postback.data == 'end'){
-                return jsonFile.end;
-            } else {
-                return jsonFile.dialogue3;
-            }
+            return jsonFile[data.postback.data];
         default :
             console.log('それ以外の場合');
             console.log(data);
