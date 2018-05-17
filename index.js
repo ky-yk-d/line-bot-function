@@ -79,6 +79,9 @@ let getMessageObj = (data, jsonFile)=> {
             } else if (data.message.type == "image"){
                 console.log('画像メッセージ');
                 return jsonFile.imageMessage;
+            } else if (data.message.type == "sticker"){
+                console.log('スタンプメッセージ');
+                return jsonFile.stickerMessage;
             } else {
                 // テキストメッセージ以外の場合
                 console.log('テキスト以外のメッセージが入力された');
