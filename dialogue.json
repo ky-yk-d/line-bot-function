@@ -62,9 +62,18 @@
             ]
         }
    },
-   "otherType": {
+   "imageMessage": {
+       "type": "image",
+       "originalContentUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/k/ky_yk_d/20180517/20180517212358.png",
+       "previewImageUrl": "https://cdn-ak.f.st-hatena.com/images/fotolife/k/ky_yk_d/20180517/20180517212358.png"
+   },
+   "otherMessageType": {
        "type": "text",
        "text": "ごめんなさい！文章での入力をお願いします！"
+   },
+   "otherEventType": {
+       "type": "text",
+       "text": "ごめんなさい！まだこのイベントには対応していません！"
    },
    "end": {
        "type": "text",

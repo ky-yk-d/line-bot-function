@@ -23,11 +23,9 @@ exports.handler = (event, context, callback) => {
 // https://developers.line.me/ja/docs/messaging-api/reference/#anchor-e65d8a1fb213489f6475b06ad10f66b7b30b0072
     jsonFile = require("./dialogue.json");
 // 入力に応じたメッサージの選択
-    console.log(data);
     messageObj = getMessageObj(data, jsonFile);
 // 返すデータを作成する
     console.log('データ作成');
-    console.log(messageObj);
     replyData = JSON.stringify({
        replyToken: replyToken,
        messages: [
@@ -71,17 +69,20 @@ let getMessageObj = (data, jsonFile)=> {
     switch (data.type){
         case 'message':
             console.log('メッセージの場合');
-            if (data.message.type != 'text'){
-                // テキストメッセージ以外の場合
-                console.log('テキスト以外のメッセージが入力された');
-                return jsonFile.otherType;
-            } else {
+            if (data.message.type == 'text'){
                 // テキストメッセージの場合、入力された文字列に応じて分岐
                 if (data.message.text == '住所') {
                     return jsonFile.dialogue2;
                 } else {
                     return jsonFile.dialogue1;
                 }
+            } else if (data.message.type == "image"){
+                console.log('画像メッセージ');
+                return jsonFile.imageMessage;
+            } else {
+                // テキストメッセージ以外の場合
+                console.log('テキスト以外のメッセージが入力された');
+                return jsonFile.otherMessageType;
             }
         case 'postback':
             console.log('postbackの場合');
@@ -89,6 +90,6 @@ let getMessageObj = (data, jsonFile)=> {
         default :
             console.log('それ以外の場合');
             console.log(data);
-            return jsonFile.otherType;
+            return jsonFile.otherEventType;
     }
 };
