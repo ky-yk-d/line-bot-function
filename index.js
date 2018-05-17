@@ -3,60 +3,89 @@
 var https = require('https');
 
 exports.handler = (event, context, callback) => {
+    let messageObj;
+    let replyToken;
+    let jsonFile;
+    let opts;
+    let req;
+    let data;
+    let replyData;
     data = event.events[0];
-    var replyToken = data.replyToken;
+    replyToken = data.replyToken;
 // LINEでユーザから送られたテキストを取得
 // メッセージオブジェクトを記述したJSONファイルを読み込む
 // https://developers.line.me/ja/docs/messaging-api/reference/#anchor-e65d8a1fb213489f6475b06ad10f66b7b30b0072
-    var jsonFile = require("./dialogue.json");
-// 入力に応じたメッサージの選択（関数でくくり出すべき）
-    var messageObj;
+    jsonFile = require("./dialogue.json");
+// 入力に応じたメッサージの選択
     console.log(data);
-    if (data.type == 'message') {
-        console.log('メッセージの場合');
-        var message = data.message;
-        var txt = message.text;
-        if (txt == '住所') {
-            messageObj = jsonFile.dialogue2;
-        } else {
-            messageObj = jsonFile.dialogue;
-        }
-    } else if (data.type == 'postback') {
-        console.log('postbackの場合');
-        messageObj = jsonFile.dialogue3;
-    } else {
-        console.log('それ以外の場合');
-        messageObj = jsonFile.dialogue;
-    }
+    messageObj = getMessageObj(data, jsonFile);
 // 返すデータを作成する
     console.log('データ作成');
     console.log(messageObj);
-    var data = JSON.stringify({
+    replyData = JSON.stringify({
        replyToken: replyToken,
        messages: [
            messageObj
         ] 
     });
-    console.log(data);
-    var opts = {
+    console.log(replyData);
+
+// この辺も整理したい（意味すらよくわかっていないのでそこから）
+    opts = {
         hostname: 'api.line.me',
         path: '/v2/bot/message/reply',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
-            "Content-Length": Buffer.byteLength(data),
+            "Content-Length": Buffer.byteLength(replyData),
             "Authorization": "Bearer " + process.env.CHANNEL_ACCESS_TOKEN
         },
         method: 'POST',
     };
 
-    var req = https.request(opts, function(res) {
-        res.on('data', function(res) {
+    req = https.request(opts, function(res) {
+        res.on('replyData', function(res) {
             console.log(res.toString());
         }).on('error', function(e) {
             console.log('ERROR: ' + e.stack);
         });
     });
-    callback(null, data);
-    req.write(data);
+    callback(null, replyData);
+    req.write(replyData);
     req.end();
+};
+
+/**
+ * 入力されたデータに応じて、返すメッセージを生成する関数
+ * @param {} data 入力されたデータ
+ * @param {} jsonFile 外部ファイルから読み込んだJSON形式のデータ
+ * @return メッセージオブジェクト
+ */
+let getMessageObj = (data, jsonFile)=> {
+    switch (data.type){
+        case 'message':
+            console.log('メッセージの場合');
+            if (data.message.type != 'text'){
+                // テキストメッセージ以外の場合
+                console.log('テキスト以外のメッセージが入力された');
+                return jsonFile.otherType;
+            } else {
+                // テキストメッセージの場合、入力された文字列に応じて分岐
+                if (data.message.text == '住所') {
+                    return jsonFile.dialogue2;
+                } else {
+                    return jsonFile.dialogue1;
+                }
+            }
+        case 'postback':
+            console.log('postbackの場合');
+            if (data.postback.data == 'end'){
+                return jsonFile.end;
+            } else {
+                return jsonFile.dialogue3;
+            }
+        default :
+            console.log('それ以外の場合');
+            console.log(data);
+            return jsonFile.otherType;
+    }
 };

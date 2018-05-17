@@ -1,5 +1,5 @@
 {
-    "dialogue": {
+    "dialogue1": {
         "type": "template",
         "altText": "テストメッセージ",
         "template": {
@@ -61,5 +61,13 @@
                 }
             ]
         }
+   },
+   "otherType": {
+       "type": "text",
+       "text": "ごめんなさい！文章での入力をお願いします！"
+   },
+   "end": {
+       "type": "text",
+       "text": "お疲れ様でした！"
    }
 }
