@@ -1,7 +1,7 @@
 // ベースはQiita等で様々な人が公開しているソースコード
 // （例） https://qiita.com/tenn25/items/5456f9eb6ac92ff09dd9
-let https = require('https');
 const Message = require('./src/message');
+const Utils = require('./src/utils');
 
 /**
  * Lambda実行時に呼び出されるハンドラ
@@ -13,7 +13,6 @@ exports.handler = (event, context, callback) => {
     let messageObj;
     let replyToken;
     let jsonFile;
-    let opts;
     let req;
     let data;
     let replyData;
@@ -35,26 +34,7 @@ exports.handler = (event, context, callback) => {
         ] 
     });
     console.log(replyData);
-
-// この辺も整理したい（意味すらよくわかっていないのでそこから）
-    opts = {
-        hostname: 'api.line.me',
-        path: '/v2/bot/message/reply',
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "Content-Length": Buffer.byteLength(replyData),
-            "Authorization": "Bearer " + process.env.CHANNEL_ACCESS_TOKEN
-        },
-        method: 'POST',
-    };
-
-    req = https.request(opts, function(res) {
-        res.on('replyData', function(res) {
-            console.log(res.toString());
-        }).on('error', function(e) {
-            console.log('ERROR: ' + e.stack);
-        });
-    });
+    req = Utils.generateRequest(replyData);
     callback(null, replyData);
     req.write(replyData);
     req.end();

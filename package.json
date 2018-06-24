@@ -4,7 +4,7 @@
   "description": "line bot sample",
   "main": "index.js",
   "scripts": {
-    "mocha": "mocha --require intelli-espower-loader -w",
+    "mocha": "mocha --require intelli-espower-loader",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
