@@ -21,6 +21,8 @@ describe('util.jsのテスト', () => {
     };
     let req = myModule.generateRequest(replyData);
     assert(expected === req);
+    // req.abort();
+    // TODO: Error: socket hang up となるのを防ぐ
   });
 });
 
