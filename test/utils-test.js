@@ -10,16 +10,17 @@ describe('util.jsのテスト', () => {
             dummy: 'dummyMessageObject'
           }
        ] 
-   });
-   let expected = {
-     replyToken: 'dummyReplyToken',
-     messages:[
+    });
+    let expected = {
+      replyToken: 'dummyReplyToken',
+      messages:[
         {
-         dummy: 'dummyMessageObject2'
+          dummy: 'dummyMessageObject2'
         }
       ]
     };
-   assert(expected.toString() === myModule.generateRequest(replyData).toString());
+    let req = myModule.generateRequest(replyData);
+    assert(expected === req);
   });
 });
 
