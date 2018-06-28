@@ -24,7 +24,6 @@ exports.handler = (event, context, callback) => {
     jsonFile = require("./dialogue.json");
 // 入力に応じたメッサージの選択
     messageObj = Message.getMessageObj(data,jsonFile);
-    // messageObj = getMessageObj(data, jsonFile);
 // 返すデータを作成する
     console.log('データ作成');
     replyData = JSON.stringify({
