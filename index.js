@@ -57,9 +57,8 @@ exports.handler = (event, context, callback) => {
 
 async function sendRequest(opts,replyData){
     return new Promise(((resolve,reject)=>{
-        let req = https.request(opts, (res) => {
-            console.log('request callback');
-        }).on('response', (response)=>{
+        console.log('Promiseの引数の関数開始');
+        let req = https.request(opts, (response) => {
             console.log('---response---');
             response.setEncoding('utf8');
             let body = '';
@@ -77,5 +76,6 @@ async function sendRequest(opts,replyData){
         });
         req.write(replyData);
         req.end();
+        console.log('Promiseの引数の関数終了');
     }));
 };
