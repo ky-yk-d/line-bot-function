@@ -14,7 +14,7 @@ exports.generateRequest = (replyData) => {
   
   return https.request(opts, function(res) {
     res.on('replyData', function(res) {
-      console.log(res.toString());
+      console.log('SUCCESS: ', res.toString());
     }).on('error', function(e) {
       console.log('ERROR: ' + e.stack);
     });

@@ -1,7 +1,7 @@
 // ベースはQiita等で様々な人が公開しているソースコード
 // （例） https://qiita.com/tenn25/items/5456f9eb6ac92ff09dd9
+let https = require('https');
 const Message = require('./src/message');
-const Utils = require('./src/utils');
 
 /**
  * Lambda実行時に呼び出されるハンドラ
@@ -13,7 +13,6 @@ exports.handler = (event, context, callback) => {
     let messageObj;
     let replyToken;
     let jsonFile;
-    let req;
     let data;
     let replyData;
     data = event.events[0];
@@ -32,9 +31,42 @@ exports.handler = (event, context, callback) => {
            messageObj
         ] 
     });
-    console.log(replyData);
-    req = Utils.generateRequest(replyData);
-    callback(null, replyData);
-    req.write(replyData);
-    req.end();
+    const opts = {
+        hostname: 'api.line.me',
+        path: '/v2/bot/message/reply',
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Content-Length": Buffer.byteLength(replyData),
+          "Authorization": "Bearer " + process.env.CHANNEL_ACCESS_TOKEN
+        },
+        method: 'POST',
+    };
+    console.log('---START---');
+    let promise = sendRequest(opts, replyData).then((res)=>{
+        console.log('---DONE---');
+        console.log('typeof:', typeof(res));
+        callback(null, res);
+    },(err)=>{
+        console.log('---ERROR---');
+        callback(err, 'errorMsg' + err.stack);
+    });
+    console.log('typeof promise:', typeof(promise));
+    console.log('promise:', promise);
+
+};
+
+async function sendRequest(opts,replyData){
+    return new Promise(((resolve,reject)=>{
+        let req = https.request(opts, (res) => {
+            console.log('request callback');
+        }).on('response', (response)=>{
+            console.log('response:',response);
+            resolve('response:' + response);
+        }).on('error', (err)=>{
+            console.log('error:', err.stack);
+            reject(err);
+        });
+        req.write(replyData);
+        req.end();
+    }));
 };
