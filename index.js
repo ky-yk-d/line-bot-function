@@ -60,8 +60,17 @@ async function sendRequest(opts,replyData){
         let req = https.request(opts, (res) => {
             console.log('request callback');
         }).on('response', (response)=>{
-            console.log('response:',response);
-            resolve('response:' + response);
+            console.log('---response---');
+            response.setEncoding('utf8');
+            let body = '';
+            response.on('data', (chunk)=>{
+                console.log('chunk:', chunk);
+                body += chunk;
+            });
+            response.on('end', ()=>{
+                console.log('end:', body);
+                resolve(body);
+            });
         }).on('error', (err)=>{
             console.log('error:', err.stack);
             reject(err);
