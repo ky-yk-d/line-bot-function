@@ -9,7 +9,7 @@ const Message = require('./src/message');
  * @param {} context コンテキスト
  * @param {} callback コールバック関数（正体は未確認）
  */
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
     let messageObj;
     let replyToken;
     let jsonFile;
@@ -42,17 +42,18 @@ exports.handler = (event, context, callback) => {
         method: 'POST',
     };
     console.log('---START---');
-    let promise = sendRequest(opts, replyData).then((res)=>{
+    let promise;
+    try {
+        promise = await sendRequest(opts, replyData);
         console.log('---DONE---');
-        console.log('typeof:', typeof(res));
-        callback(null, res);
-    },(err)=>{
+        console.log('typeof:', typeof(promise));
+        callback(null, promise);
+    } catch (err) {
         console.log('---ERROR---');
         callback(err, 'errorMsg' + err.stack);
-    });
+    }
     console.log('typeof promise:', typeof(promise));
     console.log('promise:', promise);
-
 };
 
 async function sendRequest(opts,replyData){
